@@ -1,0 +1,8 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>WK Legal Portal</title>
+<script src="../js/auth.js"></script><script>if(!WKAuth.isIn())location.replace('../login.html')</script>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;1,9..144,300&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"><link rel="stylesheet" href="../css/portal.css"></head><body>
+<div class="mtop"><button class="btn" onclick="side.classList.toggle('open')" aria-label="Menu">☰</button><b>WK Legal</b><button class="btn s" onclick="logout()">Log out</button></div>
+<div class="shell"><aside class="side" id="side"><a class="logo" href="#dashboard"><i>WK</i><span>Legal</span></a><nav id="nav"></nav><div class="who">Signed in as <b>Marc</b><br><button class="btn s" style="margin-top:8px" onclick="logout()">Log out</button><br><button class="btn s" style="margin-top:8px" onclick="resetData()">Reset sample data</button></div></aside>
+<main class="main" style="padding-top:0"><div class="banner" role="note">Confidential · demo data · sample records only</div><div id="main" style="padding-top:20px"></div><footer class="pfoot">Grok Bots handle administrative tasks only. All legal work is performed by WK Legal attorneys.</footer></main></div>
+<div class="shade" id="shade" onclick="closeD()"></div><div class="drawer" id="drawer"></div><div class="toast" id="toast"></div>
+<script src="../js/portal.js"></script></body></html>
