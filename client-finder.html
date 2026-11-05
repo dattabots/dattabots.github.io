@@ -1,0 +1,46 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Client finder — WK Legal demo walkthrough</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;1,9..144,300&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"><link rel="stylesheet" href="css/site.css"><link rel="stylesheet" href="css/demo.css"><meta name="robots" content="noindex"></head><body>
+<header class="hdr"><div class="w"><a class="logo" href="index.html"><i>WK</i><span>Legal</span></a>
+<nav id="nl"><a href="index.html">Home</a><a href="practice.html">Practice</a><a href="attorneys.html">Attorneys</a><a href="contact.html">Contact</a><a href="login.html">Login</a></nav>
+<div class="rt"><a class="btn gl sm" href="tel:+16464358300"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 3h4l2 5-3 2a12 12 0 006 6l2-3 5 2v4a2 2 0 01-2 2A17 17 0 013 5a2 2 0 012-2z"/></svg><span class="t">(646) 435-8300</span></a><button class="navt" aria-label="Menu" onclick="document.getElementById('nl').classList.toggle('open')">Menu</button></div></div></header>
+<section class="phero"><div class="bg"><img src="assets/wlk-midtown-bluehour.jpg" alt=""></div><div class="halftone"></div><div class="w"><p class="kick"><span class="pulse"></span>Demo walkthrough · Firm ops</p><h1>Client finder: describe your ideal client, <i>get a shortlist.</i></h1><p class="sub">Type the kind of client you want, and Grok Bot builds the search, scores fit and drafts a first-touch note for attorney approval.</p></div></section>
+<section class="sec soft"><div class="w dw">
+<div class="callout info"><b>Example data, not real LinkedIn profiles.</b> Every person, firm and number here is fictional and generated from your query for illustration. This is a demo walkthrough, not a LinkedIn product. Nothing is searched or sent.</div>
+<div class="fcard"><h2 class="h3">Who are you looking for?</h2>
+<form class="form" id="cf" onsubmit="return false"><label>Ideal client<input id="q" placeholder="e.g. small personal-injury law firms in Brooklyn, 2-10 attorneys"></label></form>
+<div class="chips" id="chips"></div>
+<div class="acts" style="margin-top:14px"><button class="btn pr sm" id="run">Run search</button><button class="btn sm ghost" id="reset">Reset</button></div></div>
+<div id="steps" class="fcard" hidden><h2 class="h3">What Grok Bot is doing</h2><ol class="rows" id="rows"></ol></div>
+<div id="out" hidden><h2 class="h3" id="shead"></h2><p class="cap2" id="scap"></p><div class="cgrid" id="cards"></div></div>
+<div class="fcard"><h2 class="h3">Approval first</h2><div class="callout"><b>Every message is a draft; nothing is sent without approval.</b> An attorney reviews each contact and opener before anything goes out. Searches respect platform rules.</div></div>
+</div></section>
+<footer class="ft"><div class="w"><a class="logo" href="index.html"><i>WK</i><span>Legal</span></a><span>Wexler &amp; Kaufman PLLC · 462 Seventh Ave, 12th Floor, New York, NY 10018 · (646) 435-8300</span><span>© 2026 · Attorney Advertising · Not legal advice · <a href="assets/IMAGE_CREDITS.md">Photos: Wikimedia Commons (CC)</a></span></div></footer>
+<script>
+
+const CHIPS=[{label:"Law firm",q:"small personal-injury law firms in Brooklyn, 2-10 attorneys"},{label:"Dental practice",q:"independent dental practices in Austin, 3-15 staff"},{label:"Real estate brokerage",q:"boutique real estate brokerages in Miami, 5-25 agents"}];
+const STEP_NAMES=["Parsing ideal-client profile","Building LinkedIn search filters","Scanning results","Scoring fit","Drafting a first-touch note for attorney approval"];
+const FIRST=["Avery","Jordan","Riley","Morgan","Casey","Taylor","Quinn","Reese"],LAST=["Halvorsen","Okafor-Lane","Brightwater","Castellano","Pemberton","Ashgrove","Delacroix","Winslow"];
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function parse(q){const s=q.toLowerCase();const locM=q.match(/\bin ([A-Za-z .'-]+?)(,|$| with| \d)/);const location=locM?locM[1].trim():"Your target area";const sizeM=q.match(/(\d+)\s*[-–to]+\s*(\d+)\s*([a-z]+)?/i);const size=sizeM?sizeM[1]+"–"+sizeM[2]+" "+(sizeM[3]||"employees"):"Small (under 50)";
+ if(/law|attorney|legal|lawyer/.test(s)){const focus=/injury/.test(s)?"personal injury":/estate|real/.test(s)?"real estate law":/family/.test(s)?"family law":"general practice";return{industry:"Law practice",location,size,focus,titles:["Managing Partner","Founding Attorney","Partner","Practice Manager"],orgs:["Law Group","& Associates","Legal, PLLC","Law Offices"],pain:"after-hours inquiries going to voicemail"}}
+ if(/dental|dentist|orthodont/.test(s))return{industry:"Dental practice",location,size,focus:"general and cosmetic dentistry",titles:["Practice Owner, DDS","Office Manager","Lead Dentist, DMD","Practice Administrator"],orgs:["Dental Studio","Family Dentistry","Smile Care","Dental Group"],pain:"new-patient calls missed during procedures"};
+ if(/real estate|realty|broker|realtor/.test(s))return{industry:"Real estate brokerage",location,size,focus:"residential sales",titles:["Broker of Record","Managing Broker","Team Lead","Director of Operations"],orgs:["Realty","Properties","Homes Group","Real Estate Co."],pain:"web leads that cool off before an agent calls back"};
+ return{industry:"Professional services",location,size,focus:"the profile you described",titles:["Owner","Founder","Operations Lead","General Manager"],orgs:["Partners","Group","Co.","Studio"],pain:"slow follow-up on new inquiries"}}
+function makeContacts(p,seed){const out=[];for(let i=0;i<7;i++){const f=FIRST[(i+seed)%8],l=LAST[(i*3+seed)%8];out.push({name:f+" "+l,title:p.titles[i%p.titles.length],firm:LAST[(i*5+seed+2)%8]+" "+p.orgs[i%p.orgs.length],location:p.location,score:94-i*4-((seed+i)%3),why:(i%p.titles.length<2?"Decision-maker":"Runs day-to-day operations")+" at a "+p.size+" "+p.industry.toLowerCase()+" focused on "+p.focus+" in "+p.location+".",opener:"Hi "+f+", I work with "+p.industry.toLowerCase()+"s in "+p.location+" on "+p.pain+". Open to a 20-minute look at how others handle it?"})}return out}
+const q=document.getElementById('q');q.value=CHIPS[0].q;let phase=-1,ran="",seed=0,timer=null;
+document.getElementById('chips').innerHTML=CHIPS.map((c,i)=>`<button class="chip2" data-i="${i}">${c.label}</button>`).join('');
+document.querySelectorAll('.chip2').forEach(b=>b.addEventListener('click',()=>{q.value=CHIPS[b.dataset.i].q;reset()}));
+function detail(p){return["Industry: "+p.industry+". Focus: "+p.focus+".","Title: "+p.titles.slice(0,3).join(", ")+". Location: "+p.location+". Company size: "+p.size+".","Example: 212 profiles matched the filters; 38 kept after removing out-of-area and inactive ones.","Ranked by role, firm size, location and fit with "+p.pain+".","One opener per contact, queued as drafts. Nothing is sent."]}
+function render(){const p=parse(ran||q.value),done=phase>=STEP_NAMES.length,d=detail(p),run=document.getElementById('run');
+ run.textContent=phase>=0&&!done?"Searching...":"Run search";run.disabled=phase>=0&&!done;
+ document.getElementById('steps').hidden=phase<0;
+ document.getElementById('rows').innerHTML=STEP_NAMES.map((n,i)=>`<li><span class="n">${i+1}</span><div><b>${n}</b>${i<=phase?`<small>${esc(d[i])}</small>`:''}</div><span class="st ${i<phase?'ok':i===phase?'wk':''}">${i<phase?'Done':i===phase?'Working':'Queued'}</span></li>`).join('');
+ const out=document.getElementById('out');out.hidden=!done;if(done){const cs=makeContacts(p,seed);document.getElementById('shead').textContent="Shortlist: "+cs.length+" example contacts";document.getElementById('scap').textContent="For: "+ran;
+  document.getElementById('cards').innerHTML=cs.map(c=>`<article class="fcard ccard"><h3>${esc(c.name)}</h3><dl><dt>Title</dt><dd>${esc(c.title)}</dd><dt>Firm</dt><dd>${esc(c.firm)}</dd><dt>Location</dt><dd>${esc(c.location)}</dd><dt>Fit score</dt><dd><span class="st ${c.score>=85?'ok':'ac'}">${c.score} / 100</span></dd><dt>Why they match</dt><dd>${esc(c.why)}</dd><dt>Suggested opener (draft)</dt><dd>${esc(c.opener)}</dd></dl></article>`).join('')}}
+function tick(){clearTimeout(timer);if(phase>=0&&phase<STEP_NAMES.length)timer=setTimeout(()=>{phase++;render();tick()},1100)}
+function reset(){clearTimeout(timer);phase=-1;ran="";render()}
+document.getElementById('run').addEventListener('click',()=>{if(!q.value.trim())return;seed=q.value.length%8;ran=q.value;phase=0;render();tick()});
+document.getElementById('reset').addEventListener('click',reset);render();
+
+</script>
+</body></html>

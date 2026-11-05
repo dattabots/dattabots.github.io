@@ -151,3 +151,4 @@ h2 em{font-style:italic;color:var(--cob)}
 .demo-login b{color:#fff;font-family:var(--mono);font-weight:500}.demo-login a{color:#8CC6FF;font-weight:600}
 .sec .demo-login{color:var(--ink);background:#EEF4FF;border-color:#BFD2F3;margin:0 0 16px}.sec .demo-login b{color:#0A1F7A}.sec .demo-login .dl-k{color:var(--cob)}
 @media(max-width:600px){.demo-login{border-radius:18px;gap:6px 14px}}
+.demo-links{margin-top:14px;font-size:13px;color:#9FB6DB}.demo-links a{color:#8CC6FF;font-weight:600}
